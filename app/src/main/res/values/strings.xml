@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">UltTicTacToe</string>
+    <string name="long_app_name">Ultimate Tic Tac Toe</string>
+    <string name="action_settings">Settings</string>
+    <string name="continue_label">Continue</string>
+    <string name="new_game_label">New Game</string>
+    <string name="about_label">About</string>
+    <string name="ok_label">OK</string>
+    <string name="restart_label">Restart</string>
+    <string name="main_menu_label">Main Menu</string>
+    <string name="declare_winner">%1$s is the winner</string>
+    <string name="about_title">About Ultimate Tic Tac Toe</string>
+    <string name="about_text">\
+    This game is played like regular Tic Tac Toe with one difference. To
+    win a tile you have to win a smaller game of Tic Tac Toe inside that tile.\n\
+    In case of a tie in a small board, that tile will count for both sides in the larger game.</string>
+</resources>
