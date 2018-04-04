@@ -2,7 +2,6 @@ package org.example.ultimatetictactoe;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,21 +11,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class GameFragment extends Fragment {
-    // Data structures go here...
-    static private int mLargeIds[] = {R.id.large1, R.id.large2, R.id.large3,
+    static private int largeIds[] = {R.id.large1, R.id.large2, R.id.large3,
             R.id.large4, R.id.large5, R.id.large6, R.id.large7, R.id.large8,
             R.id.large9,};
-    static private int mSmallIds[] = {R.id.small1, R.id.small2, R.id.small3,
+    static private int smallIds[] = {R.id.small1, R.id.small2, R.id.small3,
             R.id.small4, R.id.small5, R.id.small6, R.id.small7, R.id.small8,
             R.id.small9,};
 
-    private Tile mEntireBoard = new Tile(this);
-    private Tile mLargeTiles[] = new Tile[9];
-    private Tile mSmallTiles[][] = new Tile[9][9];
-    private Tile.Owner mPlayer = Tile.Owner.X;
-    private Set<Tile> mAvailable = new HashSet<Tile>();
-    private int mLastLarge;
-    private int mLastSmall;
+    private Tile entireBoard = new Tile(this);
+    private Tile largeTiles[] = new Tile[9];
+    private Tile smallTiles[][] = new Tile[9][9];
+    private Tile.Owner player = Tile.Owner.X;
+    private Set<Tile> available = new HashSet<Tile>();
+    private int lastLarge;
+    private int lastSmall;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,15 +34,15 @@ public class GameFragment extends Fragment {
     }
 
     private void clearAvailable() {
-        mAvailable.clear();
+        available.clear();
     }
 
     private void addAvailable(Tile tile) {
-        mAvailable.add(tile);
+        available.add(tile);
     }
 
     public boolean isAvailable(Tile tile) {
-        return mAvailable.contains(tile);
+        return available.contains(tile);
     }
 
     @Override
@@ -56,17 +54,17 @@ public class GameFragment extends Fragment {
     }
 
     private void initViews(View rootView) {
-        mEntireBoard.setView(rootView);
+        entireBoard.setView(rootView);
         for (int large = 0; large < 9; large++) {
-            View outer = rootView.findViewById(mLargeIds[large]);
-            mLargeTiles[large].setView(outer);
+            View outer = rootView.findViewById(largeIds[large]);
+            largeTiles[large].setView(outer);
 
             for (int small = 0; small < 9; small++) {
                 ImageButton inner = (ImageButton) outer.findViewById
-                        (mSmallIds[small]);
+                        (smallIds[small]);
                 final int fLarge = large;
                 final int fSmall = small;
-                final Tile smallTile = mSmallTiles[large][small];
+                final Tile smallTile = smallTiles[large][small];
                 smallTile.setView(inner);
                 inner.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -82,24 +80,24 @@ public class GameFragment extends Fragment {
     }
 
     private void switchTurns() {
-        mPlayer = mPlayer == Tile.Owner.X ? Tile.Owner.O : Tile
+        player = player == Tile.Owner.X ? Tile.Owner.O : Tile
                 .Owner.X;
     }
 
     private void makeMove(int large, int small) {
-        mLastLarge = large;
-        mLastSmall = small;
-        Tile smallTile = mSmallTiles[large][small];
-        Tile largeTile = mLargeTiles[large];
-        smallTile.setOwner(mPlayer);
+        lastLarge = large;
+        lastSmall = small;
+        Tile smallTile = smallTiles[large][small];
+        Tile largeTile = largeTiles[large];
+        smallTile.setOwner(player);
         setAvailableFromLastMove(small);
         Tile.Owner oldWinner = largeTile.getOwner();
         Tile.Owner winner = largeTile.findWinner();
         if (winner != oldWinner) {
             largeTile.setOwner(winner);
         }
-        winner = mEntireBoard.findWinner();
-        mEntireBoard.setOwner(winner);
+        winner = entireBoard.findWinner();
+        entireBoard.setOwner(winner);
         updateAllTiles();
         if (winner != Tile.Owner.NEITHER) {
             ((GameActivity)getActivity()).winner(winner);
@@ -113,36 +111,31 @@ public class GameFragment extends Fragment {
     }
 
     public void initGame() {
-        Log.d("UT3", "init game");
-        mEntireBoard = new Tile(this);
-        // Create all the tiles
+        entireBoard = new Tile(this);
         for (int large = 0; large < 9; large++) {
-            mLargeTiles[large] = new Tile(this);
+            largeTiles[large] = new Tile(this);
             for (int small = 0; small < 9; small++) {
-                mSmallTiles[large][small] = new Tile(this);
+                smallTiles[large][small] = new Tile(this);
             }
-            mLargeTiles[large].setSubTiles(mSmallTiles[large]);
+            largeTiles[large].setSubTiles(smallTiles[large]);
         }
-        mEntireBoard.setSubTiles(mLargeTiles);
+        entireBoard.setSubTiles(largeTiles);
 
-        // If the player moves first, set which spots are available
-        mLastSmall = -1;
-        mLastLarge = -1;
-        setAvailableFromLastMove(mLastSmall);
+        lastSmall = -1;
+        lastLarge = -1;
+        setAvailableFromLastMove(lastSmall);
     }
 
     private void setAvailableFromLastMove(int small) {
         clearAvailable();
-        // Make all the tiles at the destination available
         if (small != -1) {
             for (int dest = 0; dest < 9; dest++) {
-                Tile tile = mSmallTiles[small][dest];
+                Tile tile = smallTiles[small][dest];
                 if (tile.getOwner() == Tile.Owner.NEITHER)
                     addAvailable(tile);
             }
         }
-        // If there were none available, make all squares available
-        if (mAvailable.isEmpty()) {
+        if (available.isEmpty()) {
             setAllAvailable();
         }
     }
@@ -150,7 +143,7 @@ public class GameFragment extends Fragment {
     private void setAllAvailable() {
         for (int large = 0; large < 9; large++) {
             for (int small = 0; small < 9; small++) {
-                Tile tile = mSmallTiles[large][small];
+                Tile tile = smallTiles[large][small];
                 if (tile.getOwner() == Tile.Owner.NEITHER)
                     addAvailable(tile);
             }
@@ -158,44 +151,42 @@ public class GameFragment extends Fragment {
     }
 
     private void updateAllTiles() {
-        mEntireBoard.updateDrawableState();
+        entireBoard.updateDrawableState();
         for (int large = 0; large < 9; large++) {
-            mLargeTiles[large].updateDrawableState();
+            largeTiles[large].updateDrawableState();
             for (int small = 0; small < 9; small++) {
-                mSmallTiles[large][small].updateDrawableState();
+                smallTiles[large][small].updateDrawableState();
             }
         }
     }
 
-    /** Create a string containing the state of the game. */
-    public String getState() {
+    public String setState() {
         StringBuilder builder = new StringBuilder();
-        builder.append(mLastLarge);
+        builder.append(lastLarge);
         builder.append(',');
-        builder.append(mLastSmall);
+        builder.append(lastSmall);
         builder.append(',');
         for (int large = 0; large < 9; large++) {
             for (int small = 0; small < 9; small++) {
-                builder.append(mSmallTiles[large][small].getOwner().name());
+                builder.append(smallTiles[large][small].getOwner().name());
                 builder.append(',');
             }
         }
         return builder.toString();
     }
 
-    /** Restore the state of the game from the given string. */
-    public void putState(String gameData) {
+    public void getState(String gameData) {
         String[] fields = gameData.split(",");
         int index = 0;
-        mLastLarge = Integer.parseInt(fields[index++]);
-        mLastSmall = Integer.parseInt(fields[index++]);
+        lastLarge = Integer.parseInt(fields[index++]);
+        lastSmall = Integer.parseInt(fields[index++]);
         for (int large = 0; large < 9; large++) {
             for (int small = 0; small < 9; small++) {
                 Tile.Owner owner = Tile.Owner.valueOf(fields[index++]);
-                mSmallTiles[large][small].setOwner(owner);
+                smallTiles[large][small].setOwner(owner);
             }
         }
-        setAvailableFromLastMove(mLastSmall);
+        setAvailableFromLastMove(lastSmall);
         updateAllTiles();
     }
 }

@@ -10,20 +10,20 @@ public class GameActivity extends Activity {
 
     public static final String KEY_RESTORE = "key_restore";
     public static final String PREF_RESTORE = "pref_restore";
-    private GameFragment mGameFragment;
+    private GameFragment gameFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        mGameFragment = (GameFragment)getFragmentManager().findFragmentById(R.id.fragment_game);
+        gameFragment = (GameFragment)getFragmentManager().findFragmentById(R.id.fragment_game);
         boolean restore = getIntent().getBooleanExtra(KEY_RESTORE, false);
 
         if(restore){
             String gameData = getPreferences(MODE_PRIVATE).getString(PREF_RESTORE, null);
             if(gameData != null){
-                mGameFragment.putState(gameData);
+                gameFragment.getState(gameData);
             }
         }
     }
@@ -31,12 +31,8 @@ public class GameActivity extends Activity {
     @Override
     protected void onPause(){
         super.onPause();
-        String gameData = mGameFragment.getState();
+        String gameData = gameFragment.setState();
         getPreferences(MODE_PRIVATE).edit().putString(PREF_RESTORE, gameData).commit();
-    }
-
-    public void restartGame(){
-        mGameFragment.restartGame();
     }
 
     public void winner(final Tile.Owner winner){
@@ -52,6 +48,6 @@ public class GameActivity extends Activity {
                 });
         final Dialog dialog = builder.create();
         dialog.show();
-        mGameFragment.initGame();
+        gameFragment.initGame();
     }
 }
