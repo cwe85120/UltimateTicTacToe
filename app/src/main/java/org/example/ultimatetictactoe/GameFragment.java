@@ -62,15 +62,15 @@ public class GameFragment extends Fragment {
             for (int small = 0; small < 9; small++) {
                 ImageButton inner = (ImageButton) outer.findViewById
                         (smallIds[small]);
-                final int fLarge = large;
-                final int fSmall = small;
+                final int LARGE = large;
+                final int SMALL = small;
                 final Tile smallTile = smallTiles[large][small];
                 smallTile.setView(inner);
                 inner.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (isAvailable(smallTile)) {
-                            makeMove(fLarge, fSmall);
+                            makeMove(LARGE, SMALL);
                             switchTurns();
                         }
                     }
@@ -80,8 +80,7 @@ public class GameFragment extends Fragment {
     }
 
     private void switchTurns() {
-        player = player == Tile.Owner.X ? Tile.Owner.O : Tile
-                .Owner.X;
+        player = player == Tile.Owner.X ? Tile.Owner.O : Tile.Owner.X;
     }
 
     private void makeMove(int large, int small) {

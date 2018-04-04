@@ -63,7 +63,7 @@ public class Tile {
             case X:
                 level = LEVEL_X;
                 break;
-            case O: // letter O
+            case O:
                 level = LEVEL_O;
                 break;
             case BOTH:
