@@ -104,12 +104,6 @@ public class GameFragment extends Fragment {
         }
     }
 
-    public void restartGame() {
-        initGame();
-        initViews(getView());
-        updateAllTiles();
-    }
-
     public void initGame() {
         entireBoard = new Tile(this);
         for (int large = 0; large < 9; large++) {
