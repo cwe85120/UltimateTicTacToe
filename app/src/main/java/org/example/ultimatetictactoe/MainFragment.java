@@ -9,6 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
 public class MainFragment extends Fragment {
 
     private AlertDialog dialog;
@@ -25,6 +29,24 @@ public class MainFragment extends Fragment {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(R.string.about_title);
                 builder.setMessage(R.string.about_text);
+                builder.setCancelable(false);
+                builder.setPositiveButton(R.string.ok_label, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                dialog = builder.show();
+            }
+        });
+
+        View tipsButton = rootView.findViewById(R.id.tips_button);
+        tipsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(getRandomTitle());
+                builder.setMessage(getRandomText());
                 builder.setCancelable(false);
                 builder.setPositiveButton(R.string.ok_label, new DialogInterface.OnClickListener() {
                     @Override
@@ -56,6 +78,18 @@ public class MainFragment extends Fragment {
         });
 
         return rootView;
+    }
+    //methods to generate random hint text
+    private String getRandomTitle(){
+        return getString (R.string.tip_title, (new Random().nextInt((1000 - 1) + 1) + 1) + " ");
+    }
+
+    private String getRandomText(){
+        String[] textList = getResources().getStringArray(R.array.tip_text_array);
+
+        int textSel = new Random().nextInt(textList.length);
+
+        return textList[textSel];
     }
 
     @Override
