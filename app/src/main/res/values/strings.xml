@@ -5,6 +5,7 @@
     <string name="continue_label">Continue</string>
     <string name="new_game_label">New Game</string>
     <string name="tips_label">Tips</string>
+    <string name="stats_label">Stats</string>
     <string name="about_label">About</string>
     <string name="ok_label">OK</string>
     <string name="restart_label">Restart</string>
@@ -15,6 +16,8 @@
     This game is played like regular Tic Tac Toe with one difference. To
     win a tile you have to win a smaller game of Tic Tac Toe inside that tile.\n\
     In case of a tie in a small board, that tile will count for both sides in the larger game.</string>
+    <string name="stats_title">Your Stats</string>
+    <string name="stats_text">Started: %1$d \nWon: %2$d \nBlue Wins: %3$d \nRed Wins: %4$d</string>
     <string name="tip_title">Random Tip #%1$s</string>
     <string-array name="tip_text_array">
         <item>Taking over the middle spot allows for the most ways to win.</item>

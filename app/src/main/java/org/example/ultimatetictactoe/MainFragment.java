@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MainFragment extends Fragment {
 
     private AlertDialog dialog;
+    private SQLiteDatabase database;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,6 +31,37 @@ public class MainFragment extends Fragment {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(R.string.about_title);
                 builder.setMessage(R.string.about_text);
+                builder.setCancelable(false);
+                builder.setPositiveButton(R.string.ok_label, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                dialog = builder.show();
+            }
+        });
+
+        View statsButton = rootView.findViewById(R.id.stats_button);
+        statsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //initiate variables
+                int startedTotal = 0;
+                int wonTotal = 0;
+                int blueWins = 0;
+                int redWins = 0;
+
+                //make database if needed
+                wakeUpDB();
+
+                //query database
+                int[] returnVars = getStats();
+
+                //setup dialogue with counts
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(R.string.stats_title);
+                builder.setMessage(String.format(getResources().getString(R.string.stats_text), startedTotal, wonTotal, blueWins, redWins));
                 builder.setCancelable(false);
                 builder.setPositiveButton(R.string.ok_label, new DialogInterface.OnClickListener() {
                     @Override
@@ -90,6 +123,22 @@ public class MainFragment extends Fragment {
         int textSel = new Random().nextInt(textList.length);
 
         return textList[textSel];
+    }
+
+    //methods to deal with database
+    public void wakeUpDB(){
+        //make or open db
+
+        //make table if none
+
+    }
+
+    private int[] getStats(){
+        int[] returnArr = new int[4];
+
+
+
+        return returnArr;
     }
 
     @Override
