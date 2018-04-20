@@ -17,7 +17,7 @@
     win a tile you have to win a smaller game of Tic Tac Toe inside that tile.\n\
     In case of a tie in a small board, that tile will count for both sides in the larger game.</string>
     <string name="stats_title">Your Stats</string>
-    <string name="stats_text">Started: %1$d \nContinued: %2$d \nWon: %3$d \nBlue Wins: %4$d \nRed Wins: %5$d</string>
+    <string name="stats_text">Started: %1$d \nContinued: %2$d \nWon: %3$d \nBlue Wins: %4$d \nRed Wins: %5$d \nTie Wins: %6$d</string>
     <string name="tip_title">Random Tip #%1$s</string>
     <string-array name="tip_text_array">
         <item>Taking over the middle spot allows for the most ways to win.</item>
