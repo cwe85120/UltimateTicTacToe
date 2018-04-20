@@ -190,14 +190,14 @@ public class MainFragment extends Fragment {
         wakeUpDB();
 
         String addStartSQL = "insert into ticTacStats (type, time) values (start, 'now');";
-        database.execSQL(addStartSQL);
+        //database.execSQL(addStartSQL);
     }
 
     private void addContinueStat(){
         wakeUpDB();
 
         String addContinueSQL = "insert into ticTacStats (type, time) values (continue, 'now');";
-        database.execSQL(addContinueSQL);
+        //database.execSQL(addContinueSQL);
     }
 
     @Override
